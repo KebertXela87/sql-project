@@ -1,5 +1,5 @@
 # sql-project
-cpsc350
+cpsc350<br>
 step 1 of the project<br>
 <p>a.<br>Talk to me about your project idea. Just give me a two minute summary of what you want to do. I just want to get a sense of whether what you are proposing lends itself to complex database queries.</p>
 <p>b.<br>Once that is done, you need to meet as a team as discussed in the related video. At the completion of this meeting you should send an email to submit.o.bot@gmail.com with the following information</p>
