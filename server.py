@@ -10,6 +10,8 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
+currentUser = ''
+
 def connectToDB():
     connectionString = 'dbname=thearchives user=jedimaster password=41PubBNmfQhmfCNy host=localhost'
     print connectionString
@@ -20,7 +22,13 @@ def connectToDB():
         
 @app.route('/')
 def helloWorld():
-    return render_template('index.html', currentpage = 'home')
+    
+    if 'username' in session:
+        currentUser = session['username']
+    else:
+        currentUser = ''
+        
+    return render_template('index.html', currentpage = 'home', user=currentUser)
 
 @app.route('/createaccount', methods=['GET', 'POST'])
 def createaccount():
@@ -32,14 +40,14 @@ def createaccount():
         print "Checking username...."
         cur.execute("SELECT username FROM users WHERE username = '%s';" % (request.form['username'],))
         if cur.fetchone():
-            return render_template('account.html', currentpage='account', bad_account='badusername', account_created='false')
+            return render_template('account.html', currentpage='account', bad_account='badusername', account_created='false', user=currentUser)
         
         # make sure passwords match
         print "Checking password...."
         password1 = request.form['password']
         password2 = request.form['retypepassword']
         if password1 != password2:
-            return render_template('account.html', currentpage='account', bad_account='badpassword', account_created='false')
+            return render_template('account.html', currentpage='account', bad_account='badpassword', account_created='false', user=currentUser)
             
         # attempt to create user
         print "Attempting to create user...."
@@ -63,9 +71,14 @@ def createaccount():
             print "User not created"
             account_created = 'false'
             
-        return render_template('account.html', currentpage='account', bad_account='unknown', account_created=account_created)
-            
-    return render_template('account.html', currentpage = 'account')
+        return render_template('account.html', currentpage='account', bad_account='unknown', account_created=account_created, user=currentUser)
+    
+    if 'username' in session:
+        currentUser = session['username']
+    else:
+        currentUser = ''
+        
+    return render_template('account.html', currentpage = 'account', user=currentUser)
     
 @app.route('/account', methods=['GET', 'POST'])
 def account():
@@ -86,13 +99,43 @@ def account():
         if cur.fetchone():
             return redirect(url_for('search'))
         else:
-            return render_template('account.html', currentpage = 'account')
+            return render_template('account.html', currentpage = 'account', user=currentUser)
     
-    return render_template('account.html', currentpage = 'account')
+    if 'username' in session:
+        currentUser = session['username']
+    else:
+        currentUser = ''
     
-@app.route('/search')
+    return render_template('account.html', currentpage = 'account', user=currentUser)
+    
+@app.route('/search', methods=['GET', 'POST'])
 def search():
-    return render_template('search.html', currentpage = 'search')
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    global currentUser
+    if request.method == 'POST':
+        searchTerm = request.form['searchTerm']
+        
+        searchCats = ['title', 'bby_aby_year', 'running_time']
+        for cat in searchCats:
+            cur.execute("SELECT * FROM movies WHERE UPPER(" + cat + ") LIKE UPPER(%s);", (searchTerm,))
+            results = cur.fetchall()
+            print "Printing results: "
+            print results
+            if(len(results) > 0):
+                return render_template('search.html', currentPage='search', results=results,  nosearch='false', user=currentUser)
+        
+        return render_template('search.html', currentPage='search', results='',  nosearch='false', user=currentUser)
+    
+    cur.execute("SELECT * FROM movies;")
+    results = cur.fetchall()
+    
+    if 'username' in session:
+        currentUser = session['username']
+    else:
+        currentUser = ''
+        
+    return render_template('search.html', currentpage='search', results=results, nosearch='true', user=currentUser)
     
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)

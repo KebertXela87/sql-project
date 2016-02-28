@@ -12,12 +12,43 @@
 						<section>
 							<header>
 								<h2>Search</h2>
-								<span class="byline">This is where you will search the database</span>
+								<span class="byline">Look through our archives.</span>
 							</header>
-							<p>Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit.</p>
-							<p>Donec nonummy magna quis risus. Quisque eleifend. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit.</p>
-							<p>Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Donec nonummy magna quis risus. Quisque eleifend. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit.</p>
-							<p>Donec nonummy magna quis risus. Quisque eleifend. Maecenas pede nisl, elementum eu, ornare ac, malesuada at, erat. Proin gravida orci porttitor enim accumsan lacinia. Donec condimentum, urna non molestie semper, ligula enim ornare nibh, quis laoreet eros quam eget ante. Aliquam libero. Vivamus nisl nibh, iaculis vitae, viverra sit amet, ullamcorper vitae, turpis. Aliquam erat volutpat. Vestibulum dui sem, pulvinar sed, imperdiet nec, iaculis nec, leo. Fusce odio. Etiam arcu dui, faucibus eget, placerat vel, sodales eget, orci. Donec ornare neque ac sem. Mauris aliquet. Aliquam sem leo, vulputate sed, convallis at, ultricies quis, justo. Phasellus tempor vehicula justo. Aliquam lacinia metus ut elit.</p>
+							<form method="POST" action="/search">
+							    <input type="text" name="searchTerm" size='50' placeholder="Search..." />
+							    <br />
+							    <input type="submit" value="Find" />
+							</form>
+						
+						{% if nosearch == 'GET' %}
+			                <table>
+							    <tr>
+							        <th>Title</th><th>Released</th><th>BBY/ABY</th><th>Running Time</th>
+							    </tr>
+							    {% for row in results %}
+							    <tr>
+							        <td>{{row['title']}}</td><td>{{row['released']}}</td><td>{{row['bby_aby_year']}}</td><td>{{row['running_time']}}</td>
+							    </tr>
+							    {% endfor %}
+							</table>
+		                {% elif results != '' %}
+							<table>
+							    <tr>
+							        <th>Title</th><th>Released</th><th>BBY/ABY</th><th>Running Time</th>
+							    </tr>
+							    {% for row in results %}
+							    <tr>
+							        <td>{{row['title']}}</td><td>{{row['released']}}</td><td>{{row['bby_aby_year']}}</td><td>{{row['running_time']}}</td>
+							    </tr>
+							    {% endfor %}
+							</table>
+						{% else %}
+    	                <p class="noresults">
+    	            	"<span class="searchterm">{{sTerm}}</span>" returned zero results...<br />
+    	            	Please check your spelling or that your search term is of a valid form.
+    	                </p>
+    	                {% endif %}
+    	                
 						</section>
 					</div>
 
