@@ -1,0 +1,15 @@
+.resultsTable td {
+	text-align: left;
+	vertical-align: top;
+	padding: 8px;
+	border-top: 1px solid white;
+}
+
+.resultsTable th {
+	font-size: 1.15em;
+	background-color: #005580;
+	color: white;
+	text-align: left;
+	vertical-align: top;
+	padding: 8px;
+}

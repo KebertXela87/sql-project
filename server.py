@@ -114,16 +114,33 @@ def search():
     cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
     global currentUser
     if request.method == 'POST':
-        searchTerm = request.form['searchTerm']
+        searchTerm = ''
         
-        searchCats = ['title', 'bby_aby_year', 'running_time']
-        for cat in searchCats:
-            cur.execute("SELECT * FROM movies WHERE UPPER(" + cat + ") LIKE UPPER(%s);", (searchTerm,))
-            results = cur.fetchall()
-            print "Printing results: "
-            print results
-            if(len(results) > 0):
-                return render_template('search.html', currentPage='search', results=results,  nosearch='false', user=currentUser)
+        print request.form['titleSearch']
+        print request.form['yearSearch']
+        print request.form['timeSearch']
+        
+        if request.form['titleSearch']:
+            print "in titlesearch"
+            searchTerm = request.form['titleSearch']
+            print "searchTerm: " + searchTerm
+            cur.execute("SELECT * FROM movies WHERE UPPER(title) LIKE UPPER(%s);", ("%%" + searchTerm + "%%",))
+        elif request.form['yearSearch']:
+            print "in year search"
+            searchTerm = request.form['yearSearch']
+            print "searchTerm: " + searchTerm
+            cur.execute("SELECT * FROM movies WHERE bby_aby_year LIKE %s;", ("%%" + searchTerm + "%%",))
+        elif request.form['timeSearch']:
+            print "in time search"
+            searchTerm = request.form['timeSearch']
+            print "searchTerm: " + searchTerm
+            cur.execute("SELECT * FROM movies WHERE running_time LIKE %s;", ("%" + searchTerm + "%",))
+            
+        results = cur.fetchall()
+        print "Printing results: "
+        print results
+        if(len(results) > 0):
+            return render_template('search.html', currentPage='search', results=results,  nosearch='false', user=currentUser)
         
         return render_template('search.html', currentPage='search', results='',  nosearch='false', user=currentUser)
     

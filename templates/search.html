@@ -15,13 +15,19 @@
 								<span class="byline">Look through our archives.</span>
 							</header>
 							<form method="POST" action="/search">
-							    <input type="text" name="searchTerm" size='50' placeholder="Search..." />
+							    <input type="text" name="titleSearch" size='50' placeholder="Search by title..." />
+							    <input type="submit" value="Find" />
 							    <br />
+							    <input type="text" name="yearSearch" size='50' placeholder="Search by year..." />
+							    <input type="submit" value="Find" />
+							    <br />
+							    <input type="text" name="timeSearch" size='50' placeholder="Search by running time..." />
 							    <input type="submit" value="Find" />
 							</form>
 						
+						<br />
 						{% if nosearch == 'GET' %}
-			                <table>
+			                <table class="resultsTable">
 							    <tr>
 							        <th>Title</th><th>Released</th><th>BBY/ABY</th><th>Running Time</th>
 							    </tr>
@@ -32,7 +38,7 @@
 							    {% endfor %}
 							</table>
 		                {% elif results != '' %}
-							<table>
+							<table class="resultsTable">
 							    <tr>
 							        <th>Title</th><th>Released</th><th>BBY/ABY</th><th>Running Time</th>
 							    </tr>
@@ -54,6 +60,7 @@
 
 					<!-- Sidebar -->
 					<div id="sidebar" class="4u">
+						<!-- 
 						<section>
 							<header>
 								<h2>Etiam malesuada</h2>
@@ -94,6 +101,7 @@
 								</li>
 							</ul>
 						</section>
+						-->
 					</div>
 					
 				</div>
