@@ -7,6 +7,15 @@
 		<div id="featured">
 			<div class="container">
 
+				<p>
+					{% if current_user.is_authenticated %}
+					Hi {{ current_user.id[0] }}!
+					<form action="/logout">
+						<p><input type="submit" value="Log Out" name="submit" /></p>
+					</form>
+					{% endif %}
+				</p>
+				
 				<div class="row">
 					<section class="6u">
 						<span class="pennant"><span class="fa fa-lock"></span></span>

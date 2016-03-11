@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block main %}
+
+	<!-- Main -->
+		<div id="main">
+			<div id="content" class="container">
+				<section>
+					<header>
+						<h2>Login</h2>
+					</header>
+					{% if login_failed == 'true' %}
+					<p>Your Username and/or password is incorrect. Please try again.</p>
+					{% endif %}
+					<form method="POST" action="/login">
+					    <p><input type="text" name="username" size="30" placeholder="Username" /></p>
+						<p><input type="password" name="password" size="30" placeholder="Password" /></p>
+						<p><input type="submit" value="Sign In" name="submit" /></p>
+					</form>
+					
+					<form action="/logout">
+						<p><input type="submit" value="Log Out" name="submit" /></p>
+					</form>
+				</section>
+			</div>
+		</div>
+	<!-- /Main -->
+
+{% endblock %}

@@ -29,8 +29,13 @@
 						<li {% if currentpage == 'review' %}class="active"{% endif %}><a href="/reviews">Reviews</a></li>
 						<li {% if currentpage == 'timeline' %}class="active"{% endif %}><a href="/timeline">Timeline</a></li>
 						<li {% if currentpage == 'search' %}class="active"{% endif %}><a href="/search">Search</a></li>
-						<li {% if currentpage == 'account' %}class="active"{% endif %}><a href="/account">Account</a></li>
-						<li {% if currentpage == 'login' %}class="active"{% endif %}><a href="/login">Log In</a></li>
+						{% if current_user.is_authenticated %}
+							<li {% if currentpage == 'account' %}class="active"{% endif %}><a href="/useraccount">{{ current_user.id[0] }}</a></li>
+							<li><a href="/logout">Log Out</a></li>
+						{% else %}
+							<li {% if currentpage == 'create_account' %}class="active"{% endif %}><a href="/account">Account</a></li>
+							<li {% if currentpage == 'login' %}class="active"{% endif %}><a href="/login">Log In</a></li>
+						{% endif %}
 					</ul>
 				</nav>
 			</div>
