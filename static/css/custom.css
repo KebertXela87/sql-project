@@ -101,6 +101,11 @@ h3.sectionTitle {
 .navbar-nav {
 	float: right;
 }
+
+.navbar-nav > li.current {
+	background-color: #428BCA;
+}
+
 .navbar-inverse .navbar-nav > li > a {
 	font-family: 'Roboto Condensed',sans-serif;
 	color: #333333;
@@ -110,10 +115,22 @@ h3.sectionTitle {
     padding: 30px 15px;
     text-shadow: none;
 }
+
 .navbar .nav > li > a:hover,
 .navbar .nav > li > a:focus {
     color: #428BCA;
 }
+
+.navbar-nav > li.current > a {
+	color: #FFFFFF;
+	font-weight: bold;
+}
+
+.navbar .nav > li.current > a:hover,
+.navbar .nav > li.current > a:focus {
+    color: #143047;
+}
+
 .navbar-inverse .navbar-toggle {
 	background: #FFFFFF;
     border: 0 none;
@@ -181,8 +198,12 @@ h3.sectionTitle {
 /************************** HOME **************************************/
 /**********************************************************************/
 .home {
-	padding-top: 300px;
+	padding-top: 200px;
 	height: 700px;
+}
+
+.jumbotron-icon .fa-bigicon {
+	font-size: 15em;
 }
 
 /**********************************************************************/
