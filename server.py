@@ -1,8 +1,9 @@
 import psycopg2
 import psycopg2.extras
+import os, uuid
+from flask import Flask, render_template, request, redirect, url_for, session, next_is_valid, abort
+import flask.ext.login as flask_login
 
-import os
-from flask import Flask, render_template, request, redirect, url_for, session
 app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
 
@@ -10,7 +11,24 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-currentUser = ''
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+class User(flask_login.UserMixin):
+    pass
+
+@login_manager.user_loader
+def user_loader(user_id):
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    cur.execute("SELECT username FROM users WHERE username = %s;", (user_id,))
+    if cur.fetchone():
+        user = User()
+        user.id = user_id #change this?
+        return user
+        
+    return #no user
 
 def connectToDB():
     connectionString = 'dbname=thearchives user=jedimaster password=41PubBNmfQhmfCNy host=localhost'
@@ -19,7 +37,34 @@ def connectToDB():
         return psycopg2.connect(connectionString)
     except:
         print("Can't connect to database")
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    
+    #attempt login
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    usernameinput = request.form['username']
+    passwordinput = request.form['password']
+    
+    cur.execute("SELECT * FROM users WHERE username = %s AND password = crypt(%s, password);", (usernameinput, passwordinput))
+    if cur.fetchone():
+        user = User()
+        user.id = usernameinput
+        flask_login.login_user(user)
         
+        next = request.args.get('next')
+        if not next_is_valid(next):
+            return abort(400)
+            
+        return redirect(next or url_for('account'))
+    
+    #login failed
+    return 'bad login' #change this
+    
 @app.route('/')
 def helloWorld():
     
