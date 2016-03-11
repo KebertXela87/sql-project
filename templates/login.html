@@ -1,11 +1,19 @@
 {% extends "layout.html" %}
 
-{% block main %}
+{% block header %}
+	
+	<div id="topWrap" class="jumbotron">
+		<div class="container">
 
-	<!-- Main -->
-		<div id="main">
-			<div id="content" class="container">
-				<section>
+        <p>make me bigger</p>
+				
+		</div>
+	</div>
+
+{% endblock %}
+{% block content %}
+	<div id="featureWrap">
+		<div class="container">
 					<header>
 						<h2>Login</h2>
 					</header>
@@ -21,9 +29,9 @@
 					<form action="/logout">
 						<p><input type="submit" value="Log Out" name="submit" /></p>
 					</form>
-				</section>
-			</div>
 		</div>
-	<!-- /Main -->
+	</div> <!-- /featureWrap -->
+	
+	
 
 {% endblock %}

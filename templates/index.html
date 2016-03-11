@@ -1,37 +1,82 @@
-
 {% extends "layout.html" %}
 
-{% block featured %}
+{% block header %}
+	
+	<div id="topWrap" class="jumbotron home">
+	<div class="container">
+		<div class="col-md-12 jumboText text-center">
+			<h1>Responsive App Landing Page</h1>
+			<h2>"If an item does not appear in our records, it does not exist."</h2>
+		</div>
+	</div>
+	</div>
 
-	<!-- Featured -->
-		<div id="featured">
-			<div class="container">
-
-				<p>
-					{% if current_user.is_authenticated %}
-					Hi {{ current_user.id[0] }}!
-					<form action="/logout">
-						<p><input type="submit" value="Log Out" name="submit" /></p>
-					</form>
-					{% endif %}
-				</p>
-				
-				<div class="row">
-					<section class="6u">
-						<span class="pennant"><span class="fa fa-lock"></span></span>
-						<h3>Create an Account</h3>
-						<p>Create an account in order to use our different features!</p>
-						<a href="/account" class="button button-style1">Read More</a>
-					</section>
-					<section class="6u">
-						<span class="pennant"><span class="fa fa-globe"></span></span>
-						<h3>Search</h3>
-						<p>Come look through our many volumes of information!</p>
-						<a href="/search" class="button button-style1">Read More</a>
-					</section>
-
+{% endblock %}
+{% block content %}
+	<div id="featureWrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-3 text-center feature">
+					<i class="fa fa-tablet icon"></i>
+					<h3>Timeline</h3>
+					<p>
+					Lorem ipsum dolizzle sit tellivizzle, boom shackalack adipiscing elit. Nullam mofo velizzle, get down get down stuff, sure cool, dizzle vizzle, arcu. Yo mamma izzle tortizzle.
+					</p>
+				</div>
+				<div class="col-sm-3 text-center feature">
+					<i class="fa fa-pencil icon"></i>
+					<h3>Reviews</h3>
+					<p>
+					Lorem ipsum dolizzle sit tellivizzle, boom shackalack adipiscing elit. Nullam mofo velizzle, get down get down stuff, sure cool, dizzle vizzle, arcu. Yo mamma izzle tortizzle.
+					</p>
+				</div>
+				<div class="col-sm-3 text-center feature">
+					<i class="fa fa-star icon"></i>
+					<h3>Search</h3>
+					<p>
+					Lorem ipsum dolizzle sit tellivizzle, boom shackalack adipiscing elit. Nullam mofo velizzle, get down get down stuff, sure cool, dizzle vizzle, arcu. Yo mamma izzle tortizzle.
+					</p>
+				</div>
+				<div class="col-sm-3 text-center feature">
+					<i class="fa fa-star icon"></i>
+					<h3>Create an Account</h3>
+					<p>
+					Lorem ipsum dolizzle sit tellivizzle, boom shackalack adipiscing elit. Nullam mofo velizzle, get down get down stuff, sure cool, dizzle vizzle, arcu. Yo mamma izzle tortizzle.
+					</p>
 				</div>
 			</div>
 		</div>
+	</div> <!-- /featureWrap -->
+	
+		<div id="testimonialsWrap" class="altWrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<h2 class="sectionTitle">What people say</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="flexslider">
+						<ul class="slides">
+							<li>
+								<div class="quote">"Etizzle laoreet doggy dope nisl. Dang pulvinizzle, ipsizzle dawg."</div>
+								<div class="author">Martin Nizzle</div>
+							</li>
+							<li>
+								<div class="quote">"Crazy tellus urna, yo mamma check out this, eleifend you son of a bizzle."</div>
+								<div class="author">Jennifer Aliquizzle</div>
+							</li>
+							<li>
+								<div class="quote">"Praesent i saw beyonces tizzles and my pizzle went crizzle turpizzle."</div>
+								<div class="author">William Lorizzle</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> <!-- /testimonialsWrap -->
+	
 
 {% endblock %}

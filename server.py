@@ -7,10 +7,6 @@ import flask.ext.login as flask_login
 app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
 
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
-
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
 
@@ -39,21 +35,6 @@ def user_loader(user_id):
         
     return #no user
 
-# @login_manager.request_loader
-# def request_loader(request):
-#     db = connectToDB()
-#     cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    
-#     username = request.form.get('username')
-#     password = request.form.get('password')
-#     cur.execute("SELECT * FROM users WHERE username = %s AND password = crypt(%s, password);", (username, password))
-#     if cur.fetchone():
-#         user = User()
-#         user.id = username
-#         return user
-    
-#     return #no user
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
@@ -71,12 +52,8 @@ def login():
         user = User()
         user.id = usernameinput
         flask_login.login_user(user)
-        
-        next = request.args.get('next')
-        #if not next_is_valid(next):
-        #    return abort(400)
             
-        return redirect(next or url_for('index'))
+        return redirect(url_for('index'))
     
     #login failed
     return render_template('login.html', login_failed = 'true', currentpage = 'login')
@@ -93,7 +70,6 @@ def unauthorized_handler():
     
 @app.route('/')
 def index():
-
     return render_template('index.html', currentpage = 'home')
 
 @app.route('/account')
@@ -168,3 +144,4 @@ def search():
     
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
+    
