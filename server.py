@@ -39,21 +39,20 @@ def user_loader(user_id):
         
     return #no user
 
-@login_manager.request_loader
-def request_loader(request):
-    db = connectToDB()
-    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+# @login_manager.request_loader
+# def request_loader(request):
+#     db = connectToDB()
+#     cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
-    username = request.form.get('username')
-    password = request.form.get('password')
-    cur.execute("SELECT * FROM users WHERE username = %s AND password = crypt(%s, password);", (username, password))
-    if cur.fetchone():
-        user = User()
-        user.id = username
-        user.is_authenticated = True
-        return user
+#     username = request.form.get('username')
+#     password = request.form.get('password')
+#     cur.execute("SELECT * FROM users WHERE username = %s AND password = crypt(%s, password);", (username, password))
+#     if cur.fetchone():
+#         user = User()
+#         user.id = username
+#         return user
     
-    return #no user
+#     return #no user
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -105,6 +104,67 @@ def account():
 
     return render_template('account.html', currentpage = 'account')
 
+@app.route('/createaccount', methods=['GET', 'POST'])
+def create_account():
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    if request.method == 'GET':
+        return render_template('create_account.html', currentpage = 'create_account')
+    
+    #POST
+    # check username
+    
+    usernameinput = request.form['username']
+    passwordinput = request.form['password']
+    
+    print "Checking username...."
+    cur.execute("SELECT username FROM users WHERE username = %s;", (usernameinput,))
+    if cur.fetchone():
+        return render_template('create_account.html', currentpage='create_account', bad_account='badusername', account_created='false')
+        
+    # make sure passwords match
+    print "Checking password...."
+    password1 = request.form['password']
+    password2 = request.form['retypepassword']
+    if password1 != password2:
+        return render_template('create_account.html', currentpage='create_account', bad_account='badpassword', account_created='false')
+        
+    # attempt to create user
+    print "Attempting to create user...."
+    print "username" + request.form['username'] + " Password: " + request.form['password']
+    try:
+        cur.execute("INSERT INTO users (username, password) VALUES (%s, crypt(%s, gen_salt('bf')));", (usernameinput, passwordinput))
+    except:
+        print("Error creating user...")
+        db.rollback()
+    db.commit()
+        
+    # check to see if user was created
+    print "Checking success of user creation...."
+    cur.execute("SELECT username FROM users WHERE username = %s;", (usernameinput,))
+    if cur.fetchone():
+        # user was created
+        print "User created"
+        account_created = 'true'
+    else:
+        # user was NOT created
+        print "User not created"
+        account_created = 'false'
+            
+    return render_template('account_created.html', currentpage='create_account', bad_account='unknown', account_created=account_created)
+
+@app.route('/reviews')
+def reviews():
+    return render_template('reviews.html', currentpage='reviews')
+    
+@app.route('/timeline')
+def timeline():
+    return render_template('timeline.html', currentpage='timeline')
+
+@app.route('/search')
+def search():
+    return render_template('search.html', currentpage='search')
     
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)

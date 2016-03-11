@@ -33,7 +33,7 @@
 							<li {% if currentpage == 'account' %}class="active"{% endif %}><a href="/useraccount">{{ current_user.id[0] }}</a></li>
 							<li><a href="/logout">Log Out</a></li>
 						{% else %}
-							<li {% if currentpage == 'create_account' %}class="active"{% endif %}><a href="/account">Account</a></li>
+							<li {% if currentpage == 'create_account' %}class="active"{% endif %}><a href="/createaccount">Account</a></li>
 							<li {% if currentpage == 'login' %}class="active"{% endif %}><a href="/login">Log In</a></li>
 						{% endif %}
 					</ul>
