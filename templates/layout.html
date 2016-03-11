@@ -48,7 +48,7 @@
 				<div class="collapse navbar-collapse appiNav">
 					<ul class="nav navbar-nav">
 						<li {% if currentpage == 'home' %}class="current"{% endif %}><a href="/">Home</a></li>
-						<li {% if currentpage == 'review' %}class="current"{% endif %}><a href="/reviews">Reviews</a></li>
+						<li {% if currentpage == 'reviews' %}class="current"{% endif %}><a href="/reviews">Reviews</a></li>
 						<li {% if currentpage == 'timeline' %}class="current"{% endif %}><a href="/timeline">Timeline</a></li>
 						<li {% if currentpage == 'search' %}class="current"{% endif %}><a href="/search">Search</a></li>
 						{% if current_user.is_authenticated %}

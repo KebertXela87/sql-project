@@ -206,6 +206,41 @@ h3.sectionTitle {
 	font-size: 15em;
 }
 
+.pageheader {
+	padding-bottom: 40px;
+}
+
+.center {
+	float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn.outline {
+    background: none;
+    padding: 12px 22px;
+}
+
+.btn-primary.outline {
+    border: 2px solid #e1e1e1;
+    color: #0099cc;
+}
+
+.btn-primary.outline:hover, .btn-primary.outline:focus, .btn-primary.outline:active, .btn-primary.outline.active, .open > .dropdown-toggle.btn-primary {
+    color: #333333;
+    background: #428BCA;
+    border-color: #444;
+}
+.btn-primary.outline:active, .btn-primary.outline.active {
+    border-color: #007299;
+    color: #007299;
+    box-shadow: none;
+}
+
+.iconlink:hover {
+	text-decoration: none;
+}
+
 /**********************************************************************/
 /************************** WHAT WE DO *******************************/
 /********************************************************************/
@@ -240,7 +275,7 @@ h3.sectionTitle {
 #featureWrap .icon:hover {
     color: #428BCA;
 	background-color: #fff;
-    cursor: default;
+    cursor: pointer;
 }
 #featureWrap h3 {
 	font-weight: 700;
