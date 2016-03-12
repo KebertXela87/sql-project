@@ -4,22 +4,20 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
-		<meta name="description" content="A Bootstrap based app landing page template">
+		<meta name="description" content="">
 		<meta name="author" content="">
-		<link rel="shortcut icon" href="static/assets/ico/favicon-empire.ico">
+		<link rel="shortcut icon" href="/static/assets/ico/favicon-empire.ico">
 
 		<title>The Archives</title>
 
 		<!-- Bootstrap core CSS -->
-		<link href="static/css/bootstrap.min.css" rel="stylesheet">
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
-		<link href="static/css/custom.css" rel="stylesheet">
-		<link href="static/css/flexslider.css" rel="stylesheet">
+		<link href="/static/css/custom.css" rel="stylesheet">
+		<link href="/static/css/flexslider.css" rel="stylesheet">
 			
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-		<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
-		<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!--[if lt IE 9]>
@@ -52,7 +50,7 @@
 						<li {% if currentpage == 'timeline' %}class="current"{% endif %}><a href="/timeline">Timeline</a></li>
 						<li {% if currentpage == 'search' %}class="current"{% endif %}><a href="/search">Search</a></li>
 						{% if current_user.is_authenticated %}
-							<li {% if currentpage == 'account' %}class="current"{% endif %}><a href="/useraccount">{{ current_user.id[0] }}</a></li>
+							<li {% if currentpage == 'account' %}class="current"{% endif %}><a href="/useraccount">{{ current_user.id }}</a></li>
 							<li><a href="/logout">Log Out</a></li>
 						{% else %}
 							<li {% if currentpage == 'create_account' %}class="current"{% endif %}><a href="/createaccount">Account</a></li>

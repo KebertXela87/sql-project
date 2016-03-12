@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 import os, uuid
-from flask import Flask, render_template, request, redirect, url_for, session, abort
+from flask import Flask, render_template, request, redirect, url_for, session
 import flask.ext.login as flask_login
 
 app = Flask(__name__)
@@ -21,16 +21,21 @@ def connectToDB():
     except:
         print("Can't connect to database")
 
+def setup_User(user, data):
+    user.id = data['username']
+    user.email = 'test'
+    user.pic = ''
+
 @login_manager.user_loader
 def user_loader(user_id):
     db = connectToDB()
     cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
     
-    cur.execute("SELECT username FROM users WHERE username = %s;", (user_id,))
-    username = cur.fetchone()
-    if(len(username) > 0):
+    cur.execute("SELECT * FROM users WHERE username = %s;", (user_id,))
+    data = cur.fetchone()
+    if(len(data) > 0):
         user = User()
-        user.id = username
+        setup_User(user, data)
         return user
         
     return #no user
