@@ -21,6 +21,7 @@ def connectToDB():
     except:
         print("Can't connect to database")
 
+# setup all of the values from the users table for the current user
 def setup_User(user, data):
     user.id = data['username']
     user.email = 'test'
