@@ -15,7 +15,34 @@
 
 	<div id="featureWrap" class="text-center">
 		<div class="container">
-
+		    <!--<form ng-submit="test()">-->
+		    <!--    <input type="submit" value="test">-->
+		    <!--</form>-->
+            <div class="col-md-8 center">
+            <table class="text-left timeline">
+                <tr>
+                    <th>Year</th><th>Title</th><th>Type</th><th>Released</th>
+                </tr>
+                {% for result in results %}
+                <tr id="{{result['type_name']}}" class="{{result['type_name']}}">
+                    <td>{{result['year']}}</td><td>{{result['title']}}</td><td>{{result['type_name']}}</td><td>{{result['date']}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            
+                <!--<table class="text-left timeline">-->
+                <!--    <tr>-->
+                <!--        <th>Year</th><th>Title</th><th>Type</th><th>Released</th>-->
+                <!--    </tr>-->
+                <!--    <tr ng-repeat="row in results">-->
+                <!--        <td><span ng-bind="row.year"></span></td>-->
+                <!--        <td><span ng-bind="row.title"></span></td>-->
+                <!--        <td><span ng-bind="row.type"></span></td>-->
+                <!--        <td><span ng-bind="row.date"></span></td>-->
+                <!--    </tr>-->
+                <!--</table>-->
+            
+            </div>
 		</div>
 	</div>
 	

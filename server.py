@@ -2,10 +2,15 @@ import psycopg2
 import psycopg2.extras
 import os, uuid
 from flask import Flask, render_template, request, redirect, url_for, session
+# from flask.ext.socketio import SocketIO, emit
 import flask.ext.login as flask_login
 
-app = Flask(__name__)
+
+app = Flask(__name__, static_url_path='')
+# app.config['SECRET_KEY'] = 'secret!'
 app.secret_key = os.urandom(24).encode('hex')
+
+# socketio = SocketIO(app)
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
@@ -142,12 +147,30 @@ def reviews():
     
 @app.route('/timeline')
 def timeline():
-    return render_template('timeline.html', currentpage='timeline')
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    movies = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM movies m NATURAL JOIN types t"
+    novels = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM novels m NATURAL JOIN types t"
+    yabooks = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM ya_books m NATURAL JOIN types t"
+    shortstories = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM short_stories m NATURAL JOIN types t"
+    comics = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM comics m NATURAL JOIN types t"
+    tvshows = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM tv_shows m NATURAL JOIN types t"
+    
+    cur.execute(movies + " UNION " + novels + " UNION " + yabooks + " UNION " + shortstories + " UNION " + comics + " UNION " + tvshows + " ORDER BY timeline;")
+    results = cur.fetchall()
+    
+    return render_template('timeline.html', currentpage='timeline', results=results)
 
+# @socketio.on('connect', namespace='/timeline')
+# def makeConnection(): 
+#     print('connected')
+    
 @app.route('/search')
 def search():
     return render_template('search.html', currentpage='search')
     
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
+    # socketio.run(app, host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
     
