@@ -2,15 +2,11 @@ import psycopg2
 import psycopg2.extras
 import os, uuid
 from flask import Flask, render_template, request, redirect, url_for, session
-# from flask.ext.socketio import SocketIO, emit
 import flask.ext.login as flask_login
 
 
-app = Flask(__name__, static_url_path='')
-# app.config['SECRET_KEY'] = 'secret!'
+app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
-
-# socketio = SocketIO(app)
 
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
@@ -161,10 +157,6 @@ def timeline():
     results = cur.fetchall()
     
     return render_template('timeline.html', currentpage='timeline', results=results)
-
-# @socketio.on('connect', namespace='/timeline')
-# def makeConnection(): 
-#     print('connected')
     
 @app.route('/search')
 def search():
@@ -172,5 +164,4 @@ def search():
     
 if __name__ == '__main__':
     app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
-    # socketio.run(app, host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
     
