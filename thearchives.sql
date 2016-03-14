@@ -1,6 +1,8 @@
 DROP DATABASE IF EXISTS thearchives;
 CREATE DATABASE thearchives;
 \c thearchives;
+
+CREATE EXTENSION pgcrypto;
 -- ------------------------------------------------------------
 
 --
@@ -190,7 +192,7 @@ INSERT INTO ya_books (timeline_id, type_id, title, year, released) VALUES
 (70, 3, 'Moving Target', '3-4 ABY', 'September 4, 2015'),
 (79, 3, 'Lost Stars', '0-5 ABY', 'September 4, 2015'),
 (81, 3, 'Join the Resistance', '5 ABY', 'October 25, 2016'),
-(91, 3, 'Before the Awakening', '33 ABY', 'December 18, 2015');
+(83, 3, 'Before the Awakening', '33 ABY', 'December 18, 2015');
 
 -- ------------------------------------------------------------
 
@@ -204,21 +206,21 @@ INSERT INTO short_stories (timeline_id, type_id, title, year, released) VALUES
 (21, 4, 'Mercy Mission', '14 BBY', 'October 6, 2015'),
 (23, 4, 'Bottleneck', '14-11 BBY', 'October 6, 2015'),
 (28, 4, 'End of History, The', '10 BBY', 'December 9, 2014'),
-(42, 4, 'Rebel Bluff', '5-4 BBY', 'June 9, 2015'),
-(50, 4, 'Last Call at the Zero Angle', '4 BBY', 'March 10, 2015'),
+(42, 4, 'Rebel Bluff', '4 BBY', 'June 9, 2015'),
+(50, 4, 'Last Call at the Zero Angle', '0 ABY', 'March 10, 2015'),
 (51, 4, 'One Thousand Levels Down', '0 ABY', 'July 22, 2014'),
 (67, 4, 'Inbrief', '0 ABY', 'November 10, 2015'),
 (72, 4, 'Blade Squadron', '3 ABY', 'April 22, 2014'),
 (73, 4, 'Blade Squadron: Zero Hour', '4 ABY', 'September 22, 2015'),
 (74, 4, 'The Levers of Power', '4 ABY', 'October 6, 2015'),
-(83, 4, 'The Perfect Weapon', '4 ABY', 'November 24, 2015'),
-(84, 4, 'High Noon on Jakku', '34 ABY', 'November 30, 2015'),
-(85, 4, 'All Creatures Great and Small', '34 ABY', 'November 30, 2015'),
-(86, 4, 'Face of Evil, The', '34 ABY', 'November 30, 2015'),
-(87, 4, 'The Crimson Corsair and the Lost Treasure of Count Dooku', '34 ABY', 'April 5, 2016'),
-(88, 4, 'True Love', '34 ABY', 'April 5, 2016'),
-(89, 4, 'A Recipe for Death', '34 ABY', 'December 22, 2015'),
-(90, 4, 'Bait', '34 ABY', 'April 27, 2016');
+(84, 4, 'The Perfect Weapon', '34 ABY', 'November 24, 2015'),
+(85, 4, 'High Noon on Jakku', '34 ABY', 'November 30, 2015'),
+(86, 4, 'All Creatures Great and Small', '34 ABY', 'November 30, 2015'),
+(87, 4, 'Face of Evil, The', '34 ABY', 'November 30, 2015'),
+(88, 4, 'The Crimson Corsair and the Lost Treasure of Count Dooku', '34 ABY', 'April 5, 2016'),
+(89, 4, 'True Love', '34 ABY', 'April 5, 2016'),
+(90, 4, 'A Recipe for Death', '34 ABY', 'December 22, 2015'),
+(91, 4, 'Bait', '34 ABY', 'April 27, 2016');
 
 -- ------------------------------------------------------------
 
@@ -234,8 +236,8 @@ INSERT INTO comics (timeline_id, type_id, title, year, released) VALUES
 (25, 5, 'The Last of His Bree', '11 BBY', 'July 29, 2015'),
 (26, 5, 'Ben Kenobi''s Journal #2', '10 BBY', 'January 20, 2016'),
 (27, 5, 'Ben Kenobi''s Journal #3', '10 BBY', 'June 1, 2016'),
-(41, 5, 'Haunt', '5-4 BBY', 'September 26, 2015'),
-(48, 5, 'Princess Leia', '4 BBY', 'March 4, 2015'),
+(41, 5, 'Haunt', '4 BBY', 'September 26, 2015'),
+(48, 5, 'Princess Leia', '0 ABY', 'March 4, 2015'),
 (52, 5, 'Chewbacca', '0 ABY', 'October 14, 2015'),
 (55, 5, 'Skywalker Strikes', '0 ABY', 'January 14, 2015'),
 (56, 5, 'Vader', '0 ABY', 'February 11, 2015'),

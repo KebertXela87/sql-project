@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block header %}
+	
+	<div id="topWrap" class="jumbotron pageheader text-center">
+		<div class="container">
+
+        <i class="fa fa-lock fa-5x"></i><span class="fa-4x">   Create Account</span>
+				
+		</div>
+	</div>
+
+{% endblock %}
+{% block content %}
+
+	<div id="featureWrap" class="text-center">
+		<div class="container">
+			
+			<div class="col-lg-4 center">
+				<h3>Account Created!</h3>
+				<p>Welcome {{ user }}, to The Archives!</p>
+				<span class="byline"><a href="/login">Click Here</a> to login!</span>
+			</div>
+			
+		</div>
+	</div>
+	
+{% endblock %}

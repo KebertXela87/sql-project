@@ -15,22 +15,49 @@
 
 	<div id="featureWrap" class="text-center" ng-controller="ArchivesController">
 		<div class="container">
-            <div class="col-md-8 center">
+            <div class="col-md-9 center">
             
-                <button ng-click="toggle('Movie')" type="submit" class="btn">Movie</button>
-                <button ng-click="toggle('Novel')" type="submit" class="btn">Novel</button>
-                <button ng-click="toggle('YA Book')" type="submit" class="btn">YA Book</button>
-                <button ng-click="toggle('Short Story')" type="submit" class="btn">Short Story</button>
-                <button ng-click="toggle('Comic')" type="submit" class="btn">Comics</button>
-                <button ng-click="toggle('TV Show')" type="submit" class="btn">TV Shows</button>
-                
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4>Movies</h4>
+                        <button ng-click="toggle('Movie')" type="button" class="btn btn-primary movies"><b ng-bind="showhide[1]"></b></button>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Novels</h4>
+                        <button ng-click="toggle('Novel')" type="button" class="btn btn-primary novels"><b ng-bind="showhide[2]"></b></button>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>YA Books</h4>
+                        <button ng-click="toggle('YA Book')" type="button" class="btn btn-primary yabooks"><b ng-bind="showhide[3]"></b></button>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Short Stories</h4>
+                        <button ng-click="toggle('Short Story')" type="button" class="btn btn-primary shortstories"><b ng-bind="showhide[4]"></b></button>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>Comics</h4>
+                        <button ng-click="toggle('Comic')" type="button" class="btn btn-primary comics"><b ng-bind="showhide[5]"></b></button>
+                    </div>
+                    <div class="col-md-2">
+                        <h4>TV Shows</h4>
+                        <button ng-click="toggle('TV Show')" type="button" class="btn btn-primary tvshows"><b ng-bind="showhide[6]"></b></button>
+                    </div>
+                </div>
+                <br>
                 <table class="text-left timeline">
                     <tr>
-                        <th>Year</th><th>Title</th><th>Type</th><th>Released</th>
+                        <th style="width:100px">Year</th>
+                        <th style="width:450px">Title</th>
+                        <th style="width:120px">Type</th>
+                        <th style="width:180px">Released</th>
                     </tr>
                     {% for result in results %}
                     <tr id="{{result['type_name']}}" class="{{result['type_name']}}">
-                        <td>{{result['year']}}</td><td>{{result['title']}}</td><td>{{result['type_name']}}</td><td>{{result['date']}}</td>
+                        <!--style="background-color: #b3b3b3; color: #fff;"-->
+                        <td {% if result[0] < 47 %}class="BBY"{% endif %}>{{result['year']}}</td>
+                        <td class="tdname">{{result['title']}}</td>
+                        <td class="tdname">{{result['type_name']}}</td>
+                        <td>{{result['date']}}</td>
                     </tr>
                     {% endfor %}
                 </table>

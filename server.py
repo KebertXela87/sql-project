@@ -137,7 +137,7 @@ def create_account():
         print "User not created"
         account_created = 'false'
             
-    return render_template('account_created.html', currentpage='create_account', bad_account='unknown', account_created=account_created)
+    return render_template('account_created.html', currentpage='create_account', bad_account='unknown', account_created=account_created, user=usernameinput)
 
 @app.route('/reviews')
 def reviews():

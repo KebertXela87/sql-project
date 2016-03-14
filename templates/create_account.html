@@ -15,7 +15,29 @@
 
 	<div id="featureWrap" class="text-center">
 		<div class="container">
-
+			
+			<div class="col-lg-4 center">
+				<form method="POST" action="/createaccount">
+					<h3>Enter Username:</h3>
+					<p class="input-group input-group-lg">
+				    	<span class="input-group-addon" id="username-addon1"><i class="fa fa-user"></i></span>
+				    	<input type="text" name="username" class="form-control" placeholder="Username" aria-describedby="username-addon1" />
+			    	</p>
+			    	<h3>Enter Password:</h3>
+					<p class="input-group input-group-lg">
+				    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
+				    	<input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="password-addon1" />
+			    	</p>
+			    	<h3>Re-Enter Password:</h3>
+					<p class="input-group input-group-lg">
+				    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
+				    	<input type="password" name="retypepassword" class="form-control" placeholder="Re-type Password" aria-describedby="password-addon1" />
+			    	</p>
+			    	<br>
+					<p><input type="submit" value="Create Account" name="submit" class="btn btn-primary btn-lg outline" /></p>
+				</form>
+			</div>
+			
 		</div>
 	</div>
 	
