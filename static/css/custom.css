@@ -511,6 +511,10 @@ table.timeline td {
 	color: white;
 }
 
+.Comic {
+	background-color: blue;
+	color: white;
+}
 
 /**********************************************************************/
 /****************** MEDIA QUERIES ************************************/

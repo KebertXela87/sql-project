@@ -13,19 +13,27 @@
 {% endblock %}
 {% block content %}
 
-	<div id="featureWrap" class="text-center">
+	<div id="featureWrap" class="text-center" ng-controller="ArchivesController">
 		<div class="container">
             <div class="col-md-8 center">
-            <table class="text-left timeline">
-                <tr>
-                    <th>Year</th><th>Title</th><th>Type</th><th>Released</th>
-                </tr>
-                {% for result in results %}
-                <tr id="{{result['type_name']}}" class="{{result['type_name']}}">
-                    <td>{{result['year']}}</td><td>{{result['title']}}</td><td>{{result['type_name']}}</td><td>{{result['date']}}</td>
-                </tr>
-                {% endfor %}
-            </table>
+            
+                <button ng-click="toggle('Movie')" type="submit" class="btn">Movie</button>
+                <button ng-click="toggle('Novel')" type="submit" class="btn">Novel</button>
+                <button ng-click="toggle('YA Book')" type="submit" class="btn">YA Book</button>
+                <button ng-click="toggle('Short Story')" type="submit" class="btn">Short Story</button>
+                <button ng-click="toggle('Comic')" type="submit" class="btn">Comics</button>
+                <button ng-click="toggle('TV Show')" type="submit" class="btn">TV Shows</button>
+                
+                <table class="text-left timeline">
+                    <tr>
+                        <th>Year</th><th>Title</th><th>Type</th><th>Released</th>
+                    </tr>
+                    {% for result in results %}
+                    <tr id="{{result['type_name']}}" class="{{result['type_name']}}">
+                        <td>{{result['year']}}</td><td>{{result['title']}}</td><td>{{result['type_name']}}</td><td>{{result['date']}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             
             </div>
 		</div>
