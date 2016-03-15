@@ -13,9 +13,43 @@
 {% endblock %}
 {% block content %}
 
-	<div id="featureWrap" class="text-center">
+	<div id="featureWrap" class="text-center" ng-controller="ArchivesController">
 		<div class="container">
-
+			
+			<div class="col-md-10 center">
+				
+				<!--Search Bar-->
+				<form ng-submit="search()">
+				    <div class="input-group input-group-lg col-md-6 center">
+				    	<span class="input-group-addon" id="search-addon1"><i class="fa fa-search"></i></span>
+				      	<input type="text" class="form-control" ng-model="searchTerm" placeholder="Search for..." aria-describedby="search-addon1">
+				      	<span class="input-group-btn">
+				    	    <button class="btn btn-secondary" type="button">Search!</button>
+				      	</span>
+					</div>
+				</form>
+				
+				<div id="noresults"><br /><p>No Results found!</p></div>
+				
+				<div id="searchpane">
+					<br>
+					<table class="text-left timeline center">
+	                    <tr>
+	                        <th style="width:120px">Year</th>
+	                        <th style="width:490px">Title</th>
+	                        <th style="width:120px">Type</th>
+	                        <th style="width:180px">Released</th>
+	                    </tr>
+	                    <tr ng-repeat="row in searchResults" class="ng-class: row.type_name;">
+	                    	<td><span ng-bind="row.year"></span></td>
+	                    	<td class="tdname"><span ng-bind="row.title"></span></td>
+	                    	<td class="tdname"><span ng-bind="row.type_name"></span></td>
+	                    	<td><span ng-bind="row.date"></span></td>
+	                    </tr>
+	                </table>
+                </div>
+			</div>
+			
 		</div>
 	</div>
 	

@@ -155,3 +155,9 @@ table.timeline td, table.timeline th {
 	background-color: #339933;
 	color: white;
 }
+
+/*** SEARCH CSS *****************************************************/
+
+#searchpane, #noresults {
+  visibility: hidden;
+}

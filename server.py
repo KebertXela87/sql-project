@@ -167,6 +167,38 @@ def search():
 @socketio.on('connect', namespace='/archives')
 def makeConnection(): 
     print('connected')
+
+@socketio.on('search', namespace='/archives')
+def new_search(sTerm):
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    print("In socketio 'search'")
+    searchResults = []
+    
+    movies = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM movies m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
+    novels = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM novels m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
+    yabooks = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM ya_books m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
+    shortstories = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM short_stories m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
+    comics = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM comics m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
+    tvshows = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM tv_shows m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
+    
+    unionquery = movies + " UNION " + novels + " UNION " + yabooks + " UNION " + shortstories + " UNION " + comics + " UNION " + tvshows + " ORDER BY timeline;"
+    
+    cur.execute(unionquery, ("%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%"))
+    results = cur.fetchall()
+    
+    if(len(results) > 0):
+        for result in results:
+            tmp = {'year': result[1], 'title': result[2], 'type_name': result[3], 'date': result[4]}
+            searchResults.append(tmp)
+    
+        for searchResult in searchResults:
+            print(searchResult)
+            emit('searchResult', searchResult)
+            emit('showResults')
+    else:
+        emit('showNoResults')
     
 if __name__ == '__main__':
     #app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
