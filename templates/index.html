@@ -38,6 +38,15 @@
 					Need to look up a certain movie or book? Use our search bar!
 					</p>
 				</div>
+				{% if current_user.is_authenticated %}
+				<div class="col-sm-3 text-center feature">
+					<a class="iconlink" href="/user_account"><i class="fa fa-user icon"></i></a>
+					<h3>Your Account</h3>
+					<p>
+					Go to your account page.
+					</p>
+				</div>
+				{% else %}
 				<div class="col-sm-3 text-center feature">
 					<a class="iconlink" href="/createaccount"><i class="fa fa-lock icon"></i></a>
 					<h3>Create an Account</h3>
@@ -45,6 +54,7 @@
 					Create an account to write reviews and such.
 					</p>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</div> <!-- /featureWrap -->
