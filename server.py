@@ -139,6 +139,10 @@ def create_account():
             
     return render_template('account_created.html', currentpage='create_account', bad_account='unknown', account_created=account_created, user=usernameinput)
 
+@app.route('/useraccount')
+def user_account():
+    return render_template('user_account.html', currentpage='account')
+    
 @app.route('/reviews')
 def reviews():
     return render_template('reviews.html', currentpage='reviews')
