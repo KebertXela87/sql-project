@@ -13,10 +13,38 @@
 {% endblock %}
 {% block content %}
 
-	<div id="featureWrap" class="text-center">
+	<div id="featureWrap">
 		<div class="container">
 
+			{% if current_user.is_authenticated %}
+				<!-- FORM GOES HERE -->
+				<div class="col-md-10 center">
+					<form method="POST" action="/reviews">
+						{{ form.hidden_tag() }}
+						
+						<div class="col-md-4">
+							{{ form.items(class="form-control") }} <!--Item List-->
+						</div>
+						<div class="col-md-8 text-right">
+							<input class="input-id" type="text" name="rating"> <!--Star Rating-->
+						</div>
+						<div class="col-md-12">
+							{{ form.review_text(class="form-control", rows="10") }} <!--Text Area-->
+							<input type="submit" name="Go" class="btn btn-primary btn-lg outline"/> <!--Submit Button-->
+						</div>
+						
+					</form>
+				</div>
+			{% else %}
+				<div class="text-center">You must be logged in to post a review.</div>
+			{% endif %}
+			
+			
 		</div>
 	</div>
 	
 {% endblock %}
+
+    <!--items = SelectField(u'Pick an item', validators=[DataRequired()])-->
+    <!--review_text = StringField('name', validators=[DataRequired()])-->
+    <!--submit_button = SubmitField()-->

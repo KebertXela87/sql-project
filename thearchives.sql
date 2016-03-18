@@ -28,6 +28,21 @@ CREATE TABLE users (
 -- ------------------------------------------------------------
 
 --
+-- Table structure for reviews
+--
+
+DROP TABLE IF EXISTS reviews;
+CREATE TABLE reviews (
+    id SERIAL NOT NULL,
+    user_id int NOT NULL REFERENCES users(id),
+    review_text text NOT NULL DEFAULT '',
+    review_item_id int NOT NULL,
+    PRIMARY KEY (id)
+);
+    
+-- ------------------------------------------------------------
+
+--
 -- Table structure for 3NF Types
 --
 
@@ -53,7 +68,7 @@ INSERT INTO types (type_id, type_name) VALUES
 -- ------------------------------------------------------------
 
 --
--- Table stucture for 1NF movies
+-- Table stucture for 3NF movies
 --
 
 DROP TABLE IF EXISTS movies;
@@ -288,6 +303,8 @@ INSERT INTO tv_shows (timeline_id, type_id, title, year, released) VALUES
 --
 GRANT select, insert ON users TO jedimaster;
 GRANT select, usage ON users_id_seq TO jedimaster;
+GRANT select, insert ON reviews TO jedimaster;
+GRANT select, usage ON reviews_id_seq TO jedimaster;
 GRANT select ON movies TO jedimaster;
 GRANT select ON novels TO jedimaster;
 GRANT select ON ya_books TO jedimaster;

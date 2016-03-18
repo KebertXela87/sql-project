@@ -30,6 +30,21 @@
 	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
 	    <script src="/static/js/controller.js"></script>
 	    
+	    
+  		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+	    <script>
+	    tinymce.init({ 
+	    	selector: 'textarea',
+	    	menubar: false,
+	    	elementpath: false,
+	    	statusbar: false,
+	    	browser_spellcheck: true
+	    });
+	    </script>
+
+		<!-- Star Rating -->
+		<link href="/static/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+		
 	</head>
 
 	<body>
@@ -118,8 +133,19 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/flexslider.js"></script>
+		<script src="/static/js/star-rating.js"></script>
 	
         <script type="text/javascript">
+        // Star Rating Options: 
+        $(".input-id").rating({
+        	'showCaption':false, 
+        	'size':'xs', 
+        	'animate':false,
+        	'emptyStar':'<i class="fa fa-star-o"></i>',
+        	'filledStar':'<i class="fa fa-star"></i>',
+        	'hoverOnClear':false
+        });
+        
         $(document).ready(function() {
     
     	    $('.mobileSlider').flexslider({

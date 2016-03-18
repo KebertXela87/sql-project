@@ -1,9 +1,13 @@
 import psycopg2
 import psycopg2.extras
 import os, uuid
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, Markup
 import flask.ext.login as flask_login
 from flask.ext.socketio import SocketIO, emit
+from flask_wtf import Form
+from wtforms import StringField, SelectField, SubmitField, IntegerField
+from wtforms.widgets import TextArea, Input
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24).encode('hex')
@@ -43,12 +47,11 @@ def user_loader(user_id):
         return user
         
     return #no user
-
+    
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
-        return render_template('login.html', login_failed = 'false', currentpage = 'login')
-    
+        return render_template('login.html', login_failed='false', currentpage='login')
     #attempt login
     db = connectToDB()
     cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -63,7 +66,7 @@ def login():
         flask_login.login_user(user)
             
         return redirect(url_for('index'))
-    
+
     #login failed
     return render_template('login.html', login_failed = 'true', currentpage = 'login')
 
@@ -143,9 +146,27 @@ def create_account():
 def user_account():
     return render_template('user_account.html', currentpage='account')
     
-@app.route('/reviews')
+@app.route('/reviews', methods=('GET', 'POST'))
 def reviews():
-    return render_template('reviews.html', currentpage='reviews')
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    form = ReviewForm()
+    
+    if request.method == 'POST':
+        item = form.items.data
+        thereview = form.review_text.data
+        therating = request.form['rating']
+        
+        reviewText = Markup(thereview)
+        return render_template('testreview.html', currentpage='reviews', name=item, reviewText=reviewText, therating=therating)
+
+    q = "SELECT title FROM movies UNION SELECT title FROM novels UNION SELECT title FROM ya_books UNION SELECT title FROM short_stories UNION SELECT title FROM comics UNION SELECT title FROM tv_shows ORDER BY title;"
+    cur.execute(q)
+    results = cur.fetchall()
+    form.items.choices = [(result['title'], result['title']) for result in results]
+    
+    return render_template('reviews.html', currentpage='reviews', form=form)
     
 @app.route('/timeline')
 def timeline():
@@ -203,7 +224,12 @@ def new_search(sTerm):
             emit('showResults')
     else:
         emit('showNoResults')
-    
+           
+#form classes
+class ReviewForm(Form):
+    items = SelectField(u'Pick an item', validators=[DataRequired()])
+    review_text = StringField(u'name', widget=TextArea(), validators=[DataRequired()])
+
 if __name__ == '__main__':
     #app.run(host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
     socketio.run(app, host=os.getenv('IP', '0.0.0.0'), port=int(os.getenv('PORT', 8080)), debug = True)
