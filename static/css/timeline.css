@@ -161,3 +161,31 @@ table.timeline td, table.timeline th {
 #searchpane, #noresults {
   visibility: hidden;
 }
+
+
+/**********************************************************************/
+/******************** REVIEW TABLE ************************************/
+/**********************************************************************/
+
+
+table.reviewtable td {
+	padding: 12px 12px 12px 12px;
+	vertical-align: top;
+	font-weight: bold;
+	color: #333;
+}
+
+table.reviewtable tr:nth-child(even) {
+	color: #898989;
+	background-color: #dedede;
+}
+
+.item > td:first-child {
+  border-radius: 25px 0 0 25px;
+  -moz-border-radius: 25px 0 0 25px;
+}
+
+.item > td:last-child {
+  border-radius: 0 25px 25px 0; 
+  -moz-border-radius: 0 25px 25px 0;
+}

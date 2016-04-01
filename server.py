@@ -3,6 +3,7 @@ import psycopg2.extras
 import os, uuid
 from flask import Flask, render_template, request, redirect, url_for, session, Markup
 import flask.ext.login as flask_login
+from flask_login import current_user
 from flask.ext.socketio import SocketIO, emit
 from flask_wtf import Form
 from wtforms import StringField, SelectField, SubmitField, IntegerField
@@ -157,16 +158,46 @@ def reviews():
         item = form.items.data
         thereview = form.review_text.data
         therating = request.form['rating']
+        theuser = current_user.id
         
-        reviewText = Markup(thereview)
-        return render_template('testreview.html', currentpage='reviews', name=item, reviewText=reviewText, therating=therating)
-
+        # get item id
+        cur.execute("SELECT timeline_id FROM movies WHERE title = %s UNION SELECT timeline_id FROM novels WHERE title = %s UNION SELECT timeline_id FROM ya_books WHERE title = %s UNION SELECT timeline_id FROM short_stories WHERE title = %s UNION SELECT timeline_id FROM comics WHERE title = %s UNION SELECT timeline_id FROM tv_shows WHERE title = %s;", (item, item, item, item, item, item))
+        item_id = cur.fetchone()
+        
+        # get user id
+        cur.execute("SELECT id FROM users WHERE username = %s;", (theuser,))
+        user_id = cur.fetchone()
+        
+        # insert review into review database
+        try:
+            cur.execute("INSERT INTO reviews (reviewer_id, review_text, review_item_id, review_rating) VALUES (%s, %s, %s, %s);", (user_id[0], thereview, item_id[0], therating))
+        except:
+            print("Error inserting review...")
+            db.rollback()
+        db.commit()
+    
     q = "SELECT title FROM movies UNION SELECT title FROM novels UNION SELECT title FROM ya_books UNION SELECT title FROM short_stories UNION SELECT title FROM comics UNION SELECT title FROM tv_shows ORDER BY title;"
     cur.execute(q)
     results = cur.fetchall()
     form.items.choices = [(result['title'], result['title']) for result in results]
     
-    return render_template('reviews.html', currentpage='reviews', form=form)
+    #print out the reviews
+    cur.execute("SELECT id, reviewer_id, review_text, review_item_id, review_rating FROM reviews ORDER BY id DESC;")
+    results = cur.fetchall()
+    
+    reviewResults = []
+    
+    if(len(results) > 0):
+        for result in results:
+            cur.execute("SELECT username FROM users WHERE id = %s;", (result[1],))
+            user_name = cur.fetchone()
+            cur.execute("SELECT title FROM movies WHERE timeline_id = %s UNION SELECT title FROM novels WHERE timeline_id = %s UNION SELECT title FROM ya_books WHERE timeline_id = %s UNION SELECT title FROM short_stories WHERE timeline_id = %s UNION SELECT title FROM comics WHERE timeline_id = %s UNION SELECT title FROM tv_shows WHERE timeline_id = %s;", (result[3], result[3], result[3], result[3], result[3], result[3]))
+            item_name = cur.fetchone()
+            reviewText = Markup(result[2])
+            tmp = {'username': user_name[0], 'review_text': reviewText, 'item_name': item_name[0], 'rating': result[4]}
+            reviewResults.append(tmp)
+        
+    return render_template('reviews.html', currentpage='reviews', form=form, reviewResults=reviewResults)
     
 @app.route('/timeline')
 def timeline():
@@ -224,7 +255,8 @@ def new_search(sTerm):
             emit('showResults')
     else:
         emit('showNoResults')
-           
+
+
 #form classes
 class ReviewForm(Form):
     items = SelectField(u'Pick an item', validators=[DataRequired()])

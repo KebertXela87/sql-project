@@ -34,9 +34,10 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
     id SERIAL NOT NULL,
-    user_id int NOT NULL REFERENCES users(id),
+    reviewer_id int NOT NULL REFERENCES users(id),
     review_text text NOT NULL DEFAULT '',
     review_item_id int NOT NULL,
+    review_rating dec NOT NULL,
     PRIMARY KEY (id)
 );
     

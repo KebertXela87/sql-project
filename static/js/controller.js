@@ -41,6 +41,7 @@ ArchivesApp.controller('ArchivesController', function($scope){
     socket.on('connect', function(){
         console.log('Connected');
     });
+
     
     $scope.search = function search() {
         console.log('Searching for: ', $scope.searchTerm);

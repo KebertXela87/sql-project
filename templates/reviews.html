@@ -38,8 +38,32 @@
 			{% else %}
 				<div class="text-center">You must be logged in to post a review.</div>
 			{% endif %}
-			
-			
+				
+			<div id="reviewpane">
+				<br>
+				<table class="text-left col-md-10 reviewtable center">
+                    {% for row in reviewResults %}
+                    	<tr class="item">
+                    		<td style="width:300px">
+                    			{{row['item_name']}}
+                    			<br/>
+                    			{{row['username']}}
+                    			<br/>
+                    			<input class="display-id" type="text" value="{{row['rating']}}" name="rating">
+                    		</td>
+                    		<td colspan="3">{{row['review_text']}}</td>
+                    	</tr>
+                    	<!--<tr>-->
+                    	<!--	<td colspan="3">{{row['review_text']}}</td>-->
+                    	<!--</tr>-->
+	                {% endfor %}
+                </table>
+            </div>
+            
+            <p class="text-center">
+            <a href="#topWrap">GO TO TOP</a>
+            </p>
+                
 		</div>
 	</div>
 	
