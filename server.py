@@ -1,6 +1,6 @@
 import psycopg2
 import psycopg2.extras
-import os, uuid
+import os, uuid, re
 from flask import Flask, render_template, request, redirect, url_for, session, Markup
 import flask.ext.login as flask_login
 from flask_login import current_user
@@ -32,8 +32,8 @@ def connectToDB():
 # setup all of the values from the users table for the current user
 def setup_User(user, data):
     user.id = data['username']
-    user.email = 'test'
-    user.pic = ''
+    user.email = data['email']
+    user.pic = data['profilepic']
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -106,6 +106,8 @@ def create_account():
     
     usernameinput = request.form['username']
     passwordinput = request.form['password']
+    useremailinput = request.form['email']
+    profilepicinput = request.form['profilepic']
     
     print "Checking username...."
     cur.execute("SELECT username FROM users WHERE username = %s;", (usernameinput,))
@@ -118,12 +120,20 @@ def create_account():
     password2 = request.form['retypepassword']
     if password1 != password2:
         return render_template('create_account.html', currentpage='create_account', bad_account='badpassword', account_created='false')
+    
+    
+    # make sure email doesn't exist
+    print "Checking email...."
+    pattern = re.compile("\A\S+@\S+\.\S+\Z")
+    cur.execute("SELECT email FROM users WHERE email = %s;", (useremailinput,))
+    if cur.fetchone() or not pattern.match(useremailinput):
+        return render_template('create_account.html', currentpage='create_account', bad_account='bademail', account_created='false')
         
     # attempt to create user
     print "Attempting to create user...."
     print "username" + request.form['username'] + " Password: " + request.form['password']
     try:
-        cur.execute("INSERT INTO users (username, password) VALUES (%s, crypt(%s, gen_salt('bf')));", (usernameinput, passwordinput))
+        cur.execute("INSERT INTO users (username, password, email, profilepic) VALUES (%s, crypt(%s, gen_salt('bf')), %s, %s);", (usernameinput, passwordinput, useremailinput, profilepicinput))
     except:
         print("Error creating user...")
         db.rollback()

@@ -22,6 +22,8 @@ CREATE TABLE users (
     id SERIAL NOT NULL,
     username text NOT NULL,
     password text NOT NULL,
+    email TEXT UNIQUE CONSTRAINT valid_email CHECK (email ~ '\A\S+@\S+\.\S+\Z'),
+    profilepic text,
     PRIMARY KEY (id)
 );
 

@@ -16,27 +16,63 @@
 	<div id="featureWrap" class="text-center">
 		<div class="container">
 			
-			<div class="col-lg-4 center">
+			{% if bad_account == 'badusername' %}
+			<p><font color="red">The Username is already in use. Please try again.</font></p>
+			{% elif bad_account == 'badpassword' %}
+			<p><font color="red">Your password does not match. Please try again.</font></p>
+			{% elif bad_account == 'bademail' %}
+			<p><font color="red">Your email is already in use or is invalid. Please try again.</font></p>
+			{% endif %}
+			
+			<!--<div class="col-md-10 center">-->
 				<form method="POST" action="/createaccount">
-					<h3>Enter Username:</h3>
-					<p class="input-group input-group-lg">
-				    	<span class="input-group-addon" id="username-addon1"><i class="fa fa-user"></i></span>
-				    	<input type="text" name="username" class="form-control" placeholder="Username" aria-describedby="username-addon1" />
-			    	</p>
-			    	<h3>Enter Password:</h3>
-					<p class="input-group input-group-lg">
-				    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
-				    	<input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="password-addon1" />
-			    	</p>
-			    	<h3>Re-Enter Password:</h3>
-					<p class="input-group input-group-lg">
-				    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
-				    	<input type="password" name="retypepassword" class="form-control" placeholder="Re-type Password" aria-describedby="password-addon1" />
-			    	</p>
+					<div class="row">
+						<div class="col-md-4 col-md-offset-2">
+							<h3>Enter Username:</h3>
+							<p class="input-group input-group-lg">
+						    	<span class="input-group-addon" id="username-addon1"><i class="fa fa-user"></i></span>
+						    	<input type="text" name="username" class="form-control" placeholder="Username" aria-describedby="username-addon1" />
+					    	</p>
+					    	<h3>Enter Email:</h3>
+							<p class="input-group input-group-lg">
+						    	<span class="input-group-addon" id="email-addon1"><i class="fa fa-envelope"></i></span>
+						    	<input type="text" name="email" class="form-control" placeholder="example@gmail.com" aria-describedby="email-addon1" />
+					    	</p>
+				    	</div>
+				    	<div class="col-md-4">
+					    	<h3>Enter Password:</h3>
+							<p class="input-group input-group-lg">
+						    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
+						    	<input type="password" name="password" class="form-control" placeholder="Password" aria-describedby="password-addon1" />
+					    	</p>
+					    	<h3>Re-Enter Password:</h3>
+							<p class="input-group input-group-lg">
+						    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
+						    	<input type="password" name="retypepassword" class="form-control" placeholder="Re-type Password" aria-describedby="password-addon1" />
+					    	</p>
+				    	</div>
+			    	</div>
+			    	
+			    	<div class="row">
+			    		<div class="col-md-12">
+					    	<!-- SELECT A USER ICON -->
+					    	<h3>Select A User Icon:</h3>
+					    	<div class="center-block testing">
+						    	<select class="image-picker show-html" name="profilepic">
+									<option data-img-src="static/assets/profilepics/C-3PO.png" value="C-3PO.png">  C-3PO  </option>
+									<option data-img-src="static/assets/profilepics/darthvader.png" value="darthvader.png">  Darth Vader  </option>
+									<option data-img-src="static/assets/profilepics/jedi.png" value="jedi.png">  Jedi  </option>
+									<option data-img-src="static/assets/profilepics/R2D2.png" value="R2D2.png">  R2-D2  </option>
+									<option data-img-src="static/assets/profilepics/xwing.png" value="xwing.png">  X-Wing  </option>
+								</select>
+							</div>
+						</div>
+					</div>
 			    	<br>
 					<p><input type="submit" value="Create Account" name="submit" class="btn btn-primary btn-lg outline" /></p>
 				</form>
-			</div>
+
+			<!--</div>-->
 			
 		</div>
 	</div>

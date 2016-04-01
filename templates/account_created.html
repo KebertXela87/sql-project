@@ -16,11 +16,15 @@
 	<div id="featureWrap" class="text-center">
 		<div class="container">
 			
+			{% if account_created == 'false' %}
+			<p><font color="red">There was a problem creating your account. Please try again. <span class="byline"><a href="/createaccount">Click Here</a></font></p>
+			{% else %}
 			<div class="col-lg-4 center">
 				<h3>Account Created!</h3>
 				<p>Welcome {{ user }}, to The Archives!</p>
 				<span class="byline"><a href="/login">Click Here</a> to login!</span>
 			</div>
+			{% endif %}
 			
 		</div>
 	</div>

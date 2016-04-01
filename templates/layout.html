@@ -30,8 +30,7 @@
 	    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.4/socket.io.js"></script>
 	    <script src="/static/js/controller.js"></script>
 	    
-	    
-  		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+		<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 	    <script>
 	    tinymce.init({ 
 	    	selector: 'textarea',
@@ -41,7 +40,7 @@
 	    	browser_spellcheck: true
 	    });
 	    </script>
-
+	    
 		<!-- Star Rating -->
 		<link href="/static/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
 		
@@ -134,7 +133,8 @@
         <script src="static/js/bootstrap.min.js"></script>
         <script src="static/js/flexslider.js"></script>
 		<script src="/static/js/star-rating.js"></script>
-	
+        <script src="/static/js/image-picker.js"></script>
+
         <script type="text/javascript">
         // Star Rating Options: 
         $(".input-id").rating({
@@ -153,6 +153,8 @@
         	'filledStar':'<i class="fa fa-star"></i>'
         });
         
+        $("select").imagepicker()
+
         $(document).ready(function() {
     
     	    $('.mobileSlider').flexslider({

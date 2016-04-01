@@ -189,3 +189,14 @@ table.reviewtable tr:nth-child(even) {
   border-radius: 0 25px 25px 0; 
   -moz-border-radius: 0 25px 25px 0;
 }
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.testing {
+    padding-left: 20px;
+    width: 800px;
+}
