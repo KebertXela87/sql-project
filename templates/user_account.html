@@ -16,11 +16,67 @@
 	<div id="featureWrap" class="text-center">
 		<div class="container">
 			
-			{{ current_user.id }}<br/>
-			{{ current_user.email }}
-			<img src="static/assets/profilepics/{{current_user.pic}}">
+			{% if bad_pass == 'true' %}
+			<p><font color="red">Your new password does not match. Please try again.</font></p>
+			{% endif %}
 			
+			<table class="col-md-10 center">
+				<tr>
+					<td style="vertical-align:top">
+						<img src="static/assets/profilepics/{{current_user.pic}}">
+					</td>
+					<td>
+						<div class="col-md-6 center text-left">
+						<h3>{{ current_user.id }}</h3>
+						<h4>{{ current_user.email }}</h4>
+						</div>
+						<form class="col-md-6 center" action="/useraccount" method="POST">
+							<br/>
+							<h5>Change Password:</h5>
+							<p class="input-group">
+						    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
+						    	<input type="password" name="password" class="form-control" placeholder="Change Password" aria-describedby="password-addon1" />
+					    	</p>
+					    	<h5>Re-Enter New Password:</h5>
+							<p class="input-group">
+						    	<span class="input-group-addon" id="password-addon1"><i class="fa fa-key"></i></span>
+						    	<input type="password" name="retypepassword" class="form-control" placeholder="Re-type New Password" aria-describedby="password-addon1" />
+					    	</p>
+					    	<br>
+							<p><input type="submit" value="Submit" name="submit" class="btn btn-primary outline" /></p>
+						</form>
+					</td>
+				</tr>
+			</table>
 			
+			<div id="reviewpane">
+				<br>
+				<table class="text-left col-md-10 reviewtable center">
+                    {% for row in reviewResults %}
+                    	<tr class="item">
+                    		<td style="width:300px">
+                    			{{row['item_name']}}
+                    			<br/>
+                    			{{row['username']}}
+                    			<br/>
+                    			<input class="display-id" type="text" value="{{row['rating']}}" name="rating">
+                    		</td>
+                    		<td colspan="3">{{row['review_text']}}</td>
+                    	</tr>
+	                {% endfor %}
+                </table>
+            </div>
+            
+            <p class="text-center">
+            <a href="#topWrap">GO TO TOP</a>
+            </p>
+			<!-- 
+			Things to add: 
+			format the page
+			ability to change password
+			ability to change email
+			show user's review posts
+			-->
 		</div>
 	</div>
 	

@@ -1,3 +1,4 @@
+/*global angular*/
 var ArchivesApp = angular.module('ArchivesApp', []);
 
 ArchivesApp.controller('ArchivesController', function($scope){
@@ -13,6 +14,7 @@ ArchivesApp.controller('ArchivesController', function($scope){
     }   
     
     $scope.toggle = function toggle(type){
+        console.log('pressing toggle');
         var i, rows = document.getElementsByClassName(type);
         var types = ["Movie", "Novel", "YA Book", "Short Story", "Comic", "TV Show"];
         

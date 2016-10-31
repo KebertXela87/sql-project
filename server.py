@@ -66,7 +66,7 @@ def login():
         user.id = usernameinput
         flask_login.login_user(user)
             
-        return redirect(url_for('index'))
+        return redirect(url_for('user_account'))
 
     #login failed
     return render_template('login.html', login_failed = 'true', currentpage = 'login')
@@ -153,9 +153,49 @@ def create_account():
             
     return render_template('account_created.html', currentpage='create_account', bad_account='unknown', account_created=account_created, user=usernameinput)
 
-@app.route('/useraccount')
+@app.route('/useraccount', methods=('GET', 'POST'))
 def user_account():
-    return render_template('user_account.html', currentpage='account')
+    db = connectToDB()
+    cur = db.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    
+    #print out the reviews
+    cur.execute("SELECT r.id, r.review_text, r.review_item_id, r.review_rating FROM reviews r JOIN users u ON r.reviewer_id = u.id WHERE r.reviewer_id = (SELECT id FROM users WHERE username = %s) ORDER BY id DESC;", (current_user.id,))
+    results = cur.fetchall()
+    
+    reviewResults = []
+    
+    if(len(results) > 0):
+        for result in results:
+            cur.execute("SELECT title FROM movies WHERE timeline_id = %s UNION SELECT title FROM novels WHERE timeline_id = %s UNION SELECT title FROM ya_books WHERE timeline_id = %s UNION SELECT title FROM short_stories WHERE timeline_id = %s UNION SELECT title FROM comics WHERE timeline_id = %s UNION SELECT title FROM tv_shows WHERE timeline_id = %s;", (result[2], result[2], result[2], result[2], result[2], result[2]))
+            item_name = cur.fetchone()
+            reviewText = Markup(result[1])
+            tmp = {'username': current_user.id, 'review_text': reviewText, 'item_name': item_name[0], 'rating': result[3]}
+            reviewResults.append(tmp)
+    
+    if request.method == 'GET':
+        return render_template('user_account.html', currentpage='account', reviewResults=reviewResults)
+    
+    #POST
+    
+    newpassword = request.form['password']
+    newpassword2 = request.form['retypepassword']
+    if newpassword != newpassword2:
+        return render_template('user_account.html', currentpage='account', bad_pass='true', reviewResults=reviewResults)
+    
+    try:
+        cur.execute("SELECT password FROM users WHERE username = %s;", (current_user.id,))
+        result = cur.fetchone()
+        currentpass = result[0]
+        currentUser = current_user.id
+        cur.execute("UPDATE users SET password = crypt(%s, gen_salt('bf')) WHERE password = %s AND username = %s;", (newpassword, currentpass, currentUser))
+    except:
+        print("Error creating user...")
+        db.rollback()
+    db.commit()
+    
+    return render_template('user_account.html', currentpage='account', bad_pass='false', reviewResults=reviewResults)
+    
+    
     
 @app.route('/reviews', methods=('GET', 'POST'))
 def reviews():
@@ -250,7 +290,7 @@ def new_search(sTerm):
     tvshows = "SELECT m.timeline_id AS timeline, m.year, m.title, t.type_name, to_char(m.released, 'Month DD YYYY') AS date FROM tv_shows m NATURAL JOIN types t WHERE (UPPER(m.year) LIKE UPPER(%s) OR UPPER(m.title) LIKE UPPER(%s) OR UPPER(t.type_name) LIKE UPPER(%s) OR UPPER(to_char(m.released, 'Month DD YYYY')) LIKE UPPER(%s))"
     
     unionquery = movies + " UNION " + novels + " UNION " + yabooks + " UNION " + shortstories + " UNION " + comics + " UNION " + tvshows + " ORDER BY timeline;"
-    
+    print(unionquery % ("%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%"))
     cur.execute(unionquery, ("%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%", "%%" + sTerm + "%%"))
     results = cur.fetchall()
     
@@ -262,7 +302,7 @@ def new_search(sTerm):
         for searchResult in searchResults:
             print(searchResult)
             emit('searchResult', searchResult)
-            emit('showResults')
+        emit('showResults')
     else:
         emit('showNoResults')
 

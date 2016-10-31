@@ -304,7 +304,7 @@ INSERT INTO tv_shows (timeline_id, type_id, title, year, released) VALUES
 --
 -- GRANT PERMISSIONS
 --
-GRANT select, insert ON users TO jedimaster;
+GRANT select, update, insert ON users TO jedimaster;
 GRANT select, usage ON users_id_seq TO jedimaster;
 GRANT select, insert ON reviews TO jedimaster;
 GRANT select, usage ON reviews_id_seq TO jedimaster;
